@@ -10,18 +10,20 @@ class ApiStreamBuilder<T> extends StatelessWidget {
   final ApiDataWidget<T> dataWidget;
   final ApiValueWidget<String> loadingWidget;
   final ApiValueWidget<String> errorWidget;
+  final bool showLoadingInitially;
 
   ApiStreamBuilder(
       {@required this.stream,
-      @required this.dataWidget,
-      @required this.loadingWidget,
-      @required this.errorWidget});
+        @required this.dataWidget,
+        @required this.loadingWidget,
+        @required this.errorWidget,
+        this.showLoadingInitially = true});
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<ApiResponse<T>>(
       stream: stream,
-      initialData: ApiResponse.loading("Loading"),
+      initialData: showLoadingInitially ? ApiResponse.loading("Loading") : null,
       builder: (context, AsyncSnapshot<ApiResponse<T>> snapshot) {
         if (snapshot.hasData) {
           switch (snapshot.data.status) {
